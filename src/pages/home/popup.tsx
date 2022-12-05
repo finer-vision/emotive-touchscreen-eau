@@ -15,33 +15,31 @@ export default function PopUp({ useShow }: Props) {
     const [page, setPage] = useState(1);
 
     return (
-        <>
-            {show && <PopUpWrapper>
-                <div id="content">
-                    <span style={{color: "black"}}>{page}</span>
-                    <div ref={pdfRef} id="pdf">
-                        <Document 
-                        file="./assets/pdf.pdf">
-                            <Page width={width}
-                            pageNumber={page}/>
-                        </Document>
-                    </div>
-                    <div id="buttons">
-                        <PIButtonPopup>
-                            Prescribing information and adverse event reporting
-                        </PIButtonPopup>
-                        <div id="buttons-page">
-                            <button onClick={() => setPage(page-1)} id="up"></button>
-                            <button onClick={() => setPage(page+1)} style={{ transform: "rotateX(180deg)" }}
-                            id="down"></button>
-                        </div>
+        <PopUpWrapper style={{visibility: show ? "visible" : "hidden"}}>
+            <div id="content">
+                <span style={{color: "black"}}>{page}</span>
+                <div ref={pdfRef} id="pdf">
+                    <Document 
+                    file="./assets/pdf.pdf">
+                        <Page width={width}
+                        pageNumber={page}/>
+                    </Document>
+                </div>
+                <div id="buttons">
+                    <PIButtonPopup>
+                        Prescribing information and adverse event reporting
+                    </PIButtonPopup>
+                    <div id="buttons-page">
+                        <button onClick={() => setPage(page-1)} id="up"></button>
+                        <button onClick={() => setPage(page+1)} style={{ transform: "rotateX(180deg)" }}
+                        id="down"></button>
                     </div>
                 </div>
-                <button id="close-button" onClick={() => setShow(!show)}>
-                    Close
-                </button>
-            </PopUpWrapper>}
-        </>
+            </div>
+            <button id="close-button" onClick={() => setShow(!show)}>
+                Close
+            </button>
+        </PopUpWrapper>
     )
 }
 

@@ -25,7 +25,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           branch: gh-pages
-          folder: client/build
+          folder: build
           clean: true
 
       - name: Slack Notification
