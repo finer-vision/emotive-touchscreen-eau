@@ -37,12 +37,18 @@ export const AppReset = createGlobalStyle`
     font-weight: normal;
     line-height: 1em;
     text-rendering: geometricPrecision;
-    background-color: #1e1e1e;
-    color: #fefefe;
+    background-color: rgb(26	56	81);
+    color: white;
+    font-size: 3vw;
+    line-height: 4.6vw;
   }
 
   main {
     overflow: auto;
     -webkit-overflow-scrolling: touch;
+  }
+
+  b {
+    font-weight: bold;
   }
 `;
