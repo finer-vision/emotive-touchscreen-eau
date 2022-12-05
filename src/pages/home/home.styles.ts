@@ -61,6 +61,7 @@ export const Box = styled.div<BoxProps>`
     font-size: 2.3vw;
     line-height: 3vw;
     padding: 2.3vw;
+    white-space: pre;
     &::before {
         content: "${props => props.content}";
     }

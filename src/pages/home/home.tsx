@@ -1,9 +1,13 @@
 import React from "react";
 import { Box, Footer, HomeWrapper, PIButton } from "./home.styles";
+import PopUp from "./popup";
 
 export default function Home() {
+  const [showPopup, setShowPopup] = React.useState(false);
+
   return (
     <HomeWrapper>
+      <PopUp useShow={[showPopup, setShowPopup]}/>
       <div id="content">
         <h1>
           Welcome to the BETMIGATM (mirabegron) Interactive Hub. Explore OAB with Astellas at  the 38<sup>th</sup> Annual EAU Congress
@@ -16,20 +20,20 @@ export default function Home() {
         </p>
         <div id="boxes">
           {
-            [`BETMIGA: \A Key data`, 
-            `OAB \A in men`, 
-            `OAB in people \A ≥65 years old`, 
-            `CV safety: \A Hoffman \A publication`].map(str => {
-              return <Box content={str}/>
+            [`BETMIGA: \\A Key data`, 
+            `OAB \\A in men`, 
+            `OAB in people \\A ≥65 years old`, 
+            `CV safety: \\A Hoffman \\A publication`].map((str, i) => {
+              return <Box key={i} content={str}/>
             })
           }
         </div>
-        <PIButton>
+        <PIButton onClick={() => setShowPopup(true)}>
           Prescribing information and adverse event reporting
         </PIButton>
       </div>
       <Footer>
-        <p id="top">
+        <div id="top">
           <p>
             BETMIGA™ is indicated for the symptomatic treatment of urgency, increased frequency and/or urgency incontinence as may occur in adult patients with OAB syndrome.<sup>1</sup>
           </p>
@@ -38,7 +42,7 @@ export default function Home() {
               1. BETMIGA™ Summary of Product Characteristics. 
             </li>
           </ul>          
-        </p>
+        </div>
         <div id="center">
           <p>
             <b style={{display: 'block'}}>Adverse event should be reported.</b>

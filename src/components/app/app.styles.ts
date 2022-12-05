@@ -51,4 +51,11 @@ export const AppReset = createGlobalStyle`
   b {
     font-weight: bold;
   }
+
+  button {
+    border: 0;
+    background-color: rgb(253	200	29);
+    color: black;
+    font-weight: bold;
+  }
 `;
