@@ -156,5 +156,7 @@ export const Footer = styled.footer`
         }
     }
 
-
+    @media (max-width: 1024px) {
+        --small: 1.13vw;
+    }
 `
