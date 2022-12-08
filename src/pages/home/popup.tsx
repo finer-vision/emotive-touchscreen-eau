@@ -17,7 +17,6 @@ export default function PopUp({ useShow }: Props) {
     return (
         <PopUpWrapper style={{visibility: show ? "visible" : "hidden"}}>
             <div id="content">
-                <span style={{color: "black"}}>{page}</span>
                 <div ref={pdfRef} id="pdf">
                     <Document 
                     file="./assets/pdf.pdf">
@@ -47,8 +46,8 @@ const PopUpWrapper = styled.div`
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
     background-color: rgba(0, 0, 0, 0.8);
     z-index: 100;
     display: flex;
@@ -70,7 +69,7 @@ const PopUpWrapper = styled.div`
         gap: 4vw;
         background: white;
         width: 90%;
-        max-height: 143vw;
+        max-height: 75vh;
         #pdf {
             position: relative;
             background: gray;

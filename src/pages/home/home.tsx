@@ -1,22 +1,25 @@
+import useMediaQuery from "@/hooks/useMediaQuery";
 import React from "react";
 import { Box, Footer, HomeWrapper, PIButton } from "./home.styles";
 import PopUp from "./popup";
 
 export default function Home() {
   const [showPopup, setShowPopup] = React.useState(false);
+  const isIPadWidth = useMediaQuery("(max-width: 1024px)");
 
   return (
     <HomeWrapper>
-      <PopUp useShow={[showPopup, setShowPopup]}/>
       <div id="content">
         <h1>
           Welcome to the BETMIGATM (mirabegron) Interactive Hub. Explore OAB with Astellas at  the 38<sup>th</sup> Annual EAU Congress
         </h1>
-        <video>
+        <div id="video">
+          <video>
 
-        </video>
+          </video>
+        </div>
         <p id="description">
-          Visit our resources and learn more about the latest developments in overactive bladder (OAB). Explore OAB in different patient populations and view the wealth of efficacy and safety data available for BETMIGA. 
+          Visit our resources and learn more about the latest developments in overactive bladder (OAB). {isIPadWidth && <br/>} Explore OAB in different patient populations and view the wealth of efficacy and safety data available for BETMIGA. 
         </p>
         <div id="boxes">
           {
@@ -71,6 +74,7 @@ export default function Home() {
           </div>
         </div>
       </Footer>
+      <PopUp useShow={[showPopup, setShowPopup]}/>
     </HomeWrapper>
   );
 }
