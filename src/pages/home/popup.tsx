@@ -26,7 +26,7 @@ export default function PopUp({ useShow }: Props) {
                 </div>
                 <div id="buttons">
                     <PIButtonPopup>
-                        Prescribing information and adverse event reporting
+                        SmPC and adverse <br/> event reporting
                     </PIButtonPopup>
                     <div id="buttons-page">
                         <button onClick={() => setPage(page-1)} id="up"></button>
@@ -69,7 +69,7 @@ const PopUpWrapper = styled.div`
         gap: 4vw;
         background: white;
         width: 90%;
-        max-height: 75vh;
+        max-height: 70vh;
         #pdf {
             position: relative;
             background: gray;
@@ -90,12 +90,13 @@ const PopUpWrapper = styled.div`
                     width: 10vw;
                     height: 10vw;
                     position: relative;
+                    border-radius: 5vw;
                     &::before {
                         position: absolute;
                         left: 0;
                         top: 0;
-                        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='133.162' height='141.975' viewBox='0 0 133.162 141.975'%3E%3Cpath id='arrow-up' d='M54.51-7.071l66.58,66.581H60.1V134.9h-10V59.51H-12.071ZM96.949,49.51,54.51,7.071,12.071,49.51Z' transform='translate(12.071 7.071)' fill='%231b3a54'/%3E%3C/svg%3E%0A");
-                        background-size: 60% 60%;
+                        background-image: url("./assets/arrow-up.png");
+                        background-size: 50% 50%;
                         background-repeat: no-repeat;
                         background-position: center;
                         content: "";
@@ -109,12 +110,12 @@ const PopUpWrapper = styled.div`
 `
 
 const PIButtonPopup = styled(PIButton)`
-    width: 55%;
+
     height: 10vw;
-    padding-right: 0;
+    padding-right: 5vw;
     padding-left: 0;
     border-radius: .7vw;
-    font-size: 2.3vw;
+    font-size: 2.5vw;
     line-height: 3.5vw;
     text-align: left;
     gap: 2vw;

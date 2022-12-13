@@ -65,7 +65,7 @@ type BoxProps = {
 
 export const Box = styled.div<BoxProps>`
     border-radius: 1.4vw;
-    font-size: 2.3vw;
+    font-size: 2.7vw;
     line-height: 3vw;
     padding: 2.3vw;
     position: relative;
@@ -73,7 +73,7 @@ export const Box = styled.div<BoxProps>`
     flex-direction: column;
     justify-content: space-between;
     background-color: rgb(253 200 29);
-    color: black;
+    color: #1B3A54;
     aspect-ratio: 1.2;
     width: 22vw;
     text-align: center;
@@ -116,6 +116,7 @@ export const PIButton = styled.button`
         width: 5vw;
         height: 5vw;
         margin-left: 3vw;
+        
     }
 `
 
@@ -149,7 +150,7 @@ export const Footer = styled.footer`
         line-height: 2vw;
         #details {
             #legal {
-                width: 50vw;
+                width: 48vw;
                 text-align: right;
             }
             display: flex;
