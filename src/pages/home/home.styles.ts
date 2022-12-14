@@ -20,6 +20,7 @@ export const HomeWrapper = styled.div`
         background: rgb(15,38,58);
         width: 100%;
         justify-content: center;
+        background: url('./assets/p1.png');
         video {
             background: black;
         }

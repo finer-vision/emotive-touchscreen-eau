@@ -1,8 +1,6 @@
-import React from "react"
+import React, { useEffect, useRef } from "react"
 import styled from "styled-components"
 import { PIButton } from "./home.styles"
-import { Document, Page } from 'react-pdf/dist/esm/entry.webpack5';
-import useElementSize from "@/hooks/useElementSize";
 import { useState } from "react";
 
 type Props = {
@@ -11,26 +9,75 @@ type Props = {
 
 export default function PopUp({ useShow }: Props) {
     const [show, setShow] = useShow;
-    const [pdfRef, { width, height }] = useElementSize();
     const [page, setPage] = useState(1);
+    const pdfRef = useRef<HTMLDivElement | null>();
+    const imgRefs = useRef<(HTMLImageElement | null)[]>([]);
+    const [allowScrolling, setAllowScrolling] = useState(true);
+    
+    const onNavClick = (p: number) => {
+        setAllowScrolling(false);
+        pdfRef.current!.querySelector(`#pdf${p}`)?.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+        });
+    }
 
+    useEffect(() => {
+        if (pdfRef.current) {
+        pdfRef.current.querySelector(`#pdf${page}`)?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }
+    }, [page]);
+
+    useEffect(() => {
+        if (pdfRef.current && allowScrolling) {
+          pdfRef.current.addEventListener("scroll", () => {
+            // Get all the image elements within the #pdf element
+            const images = Array.from(pdfRef.current!.querySelectorAll('img'));
+            // Get the center coordinates of the #pdf element
+            const pdfRect = pdfRef.current!.getBoundingClientRect();
+            const pdfCenterX = pdfRect.left + pdfRect.width / 2;
+            const pdfCenterY = pdfRect.top + pdfRect.height / 2;
+            // Get the closest image to the center of the #pdf element
+            const closestImage = images.reduce((acc, curr) => {
+                const currRect = curr.getBoundingClientRect();
+                const currCenterX = currRect.left + currRect.width / 2;
+                const currCenterY = currRect.top + currRect.height / 2;
+                const currDistance = Math.hypot(currCenterX - pdfCenterX, currCenterY - pdfCenterY);
+                const accDistance = Math.hypot(acc.getBoundingClientRect().left + acc.getBoundingClientRect().width / 2 - pdfCenterX, acc.getBoundingClientRect().top + acc.getBoundingClientRect().height / 2 - pdfCenterY);
+                return currDistance < accDistance ? curr : acc;
+            });
+            // Set the page state to the id of the closest image
+            const closestImageId = closestImage.getAttribute('id');
+            setPage(Number(closestImageId!.replace('pdf', '')));
+          });
+        }
+      }, [pdfRef]);
+      
+      
     return (
         <PopUpWrapper style={{visibility: show ? "visible" : "hidden"}}>
+            {page}
             <div id="content">
-                <div ref={pdfRef} id="pdf">
-                    <Document 
-                    file="./assets/pdf.pdf">
-                        <Page width={width}
-                        pageNumber={page}/>
-                    </Document>
+                <div ref={el => pdfRef.current = el} id="pdf">
+                    {[1,2,3].map(imgIndex => {
+                        return <img 
+                        ref={el => imgRefs.current[imgIndex] = el}
+                        style={{
+                            width: "100%",
+                            height: "100%"
+                        }} id={`pdf${imgIndex}`} src="./assets/p1.png" alt="" />
+                    })}
                 </div>
                 <div id="buttons">
                     <PIButtonPopup>
                         SmPC and adverse <br/> event reporting
                     </PIButtonPopup>
                     <div id="buttons-page">
-                        <button onClick={() => setPage(page-1)} id="up"></button>
-                        <button onClick={() => setPage(page+1)} style={{ transform: "rotateX(180deg)" }}
+                        <button onClick={() => onNavClick(page-1)} id="up"></button>
+                        <button onClick={() => onNavClick(page+1)} style={{ transform: "rotateX(180deg)" }}
                         id="down"></button>
                     </div>
                 </div>
