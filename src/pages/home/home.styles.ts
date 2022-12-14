@@ -5,6 +5,7 @@ export const HomeWrapper = styled.div`
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    font-family: "proxima-nova";
 
     h1 {
         padding: 7vw;
@@ -20,10 +21,11 @@ export const HomeWrapper = styled.div`
         flex-grow: 1;
         background: rgb(15,38,58);
         width: 100%;
+        height: 20vw;
         justify-content: center;
-        background: url('./assets/p1.png');
         video {
             background: black;
+            width: 100%;
         }
         #play {
             width: 10vw;
@@ -66,6 +68,9 @@ export const HomeWrapper = styled.div`
             padding: 2vw;
             font-size: 1.7vw;
             line-height: 2.7vw;
+        }
+        video {
+            max-height: 100%;
         }
     }
 `;
