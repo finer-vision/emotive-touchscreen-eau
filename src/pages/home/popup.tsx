@@ -59,7 +59,6 @@ export default function PopUp({ useShow }: Props) {
       
     return (
         <PopUpWrapper style={{visibility: show ? "visible" : "hidden"}}>
-            {page}
             <div id="content">
                 <div ref={el => pdfRef.current = el} id="pdf">
                     {[1,2,3].map(imgIndex => {

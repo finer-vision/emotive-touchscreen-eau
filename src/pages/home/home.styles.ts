@@ -15,6 +15,7 @@ export const HomeWrapper = styled.div`
         font-weight: bold;
     }
     #video {
+        position: relative;
         display: flex;
         flex-grow: 1;
         background: rgb(15,38,58);
@@ -23,6 +24,15 @@ export const HomeWrapper = styled.div`
         background: url('./assets/p1.png');
         video {
             background: black;
+        }
+        #play {
+            width: 10vw;
+            height: 10vw;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
         }
     }
     #content {

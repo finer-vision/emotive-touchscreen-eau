@@ -1,11 +1,24 @@
 import useMediaQuery from "@/hooks/useMediaQuery";
-import React from "react";
+import React, {useRef} from "react";
 import { Box, Footer, HomeWrapper, PIButton } from "./home.styles";
 import PopUp from "./popup";
 
 export default function Home() {
   const [showPopup, setShowPopup] = React.useState(false);
   const isIPadWidth = useMediaQuery("(max-width: 1024px)");
+  const videoRef = useRef<HTMLVideoElement | null>();
+
+  const [isPlaying, setIsPlaying] = React.useState(false);
+
+  const handlePlayPause = () => {
+    if(!videoRef.current) return;
+    setIsPlaying(!isPlaying);
+    if (isPlaying) {
+      videoRef.current.pause();
+    } else {
+      videoRef.current.play();
+    }
+  };
 
   return (
     <HomeWrapper>
@@ -13,10 +26,11 @@ export default function Home() {
         <h1>
           Welcome to the BETMIGA<sup>TM</sup> (mirabegron) Interactive Hub. Explore OAB with Astellas at  the 38<sup>th</sup> Annual EAU Congress
         </h1>
-        <div id="video">
-          <video>
+        <div id="video" onClick={handlePlayPause}>
+          <video ref={el => videoRef.current = el} src="./assets/video.mp4">
 
           </video>
+          {!isPlaying && <img src="./assets/play.png" alt="play" id="play" />}
         </div>
         <p id="description">
           Visit our resources and learn more about the latest developments in overactive bladder (OAB). {isIPadWidth && <br/>} Explore OAB in different patient populations and view the wealth of efficacy and safety data available for BETMIGA. 
