@@ -9,8 +9,8 @@ type Props = {
 
 const pageSizes = {
     keydata: 4,
-    oabinmen: 9,
-    oabin65: 4,
+    oabinmen: 18,
+    oabin65: 13,
     cvsafety: 6,
     smpc: 100
 }
