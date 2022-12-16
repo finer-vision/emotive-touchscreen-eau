@@ -1,92 +1,144 @@
 import React, { useEffect, useRef } from "react"
 import styled from "styled-components"
 import { PIButton } from "./home.styles"
-import { useState } from "react";
+import { Path } from "./home";
 
 type Props = {
-    useShow: [boolean, React.Dispatch<React.SetStateAction<boolean>>]
+    useShow: [Path, React.Dispatch<React.SetStateAction<Path>>],
+}
+
+const pageSizes = {
+    keydata: 4,
+    oabinmen: 9,
+    oabin65: 4,
+    cvsafety: 6,
+    smpc: 100
 }
 
 export default function PopUp({ useShow }: Props) {
     const [show, setShow] = useShow;
-    const [page, setPage] = useState(1);
     const pdfRef = useRef<HTMLDivElement | null>();
     const imgRefs = useRef<(HTMLImageElement | null)[]>([]);
-    const [allowScrolling, setAllowScrolling] = useState(true);
-    
-    const onNavClick = (p: number) => {
-        setAllowScrolling(false);
-        pdfRef.current!.querySelector(`#pdf${p}`)?.scrollIntoView({
-            behavior: "smooth",
-            block: "start",
-        });
-    }
-
-    useEffect(() => {
-        if (pdfRef.current) {
-        pdfRef.current.querySelector(`#pdf${page}`)?.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
-      }
-    }, [page]);
-
-    useEffect(() => {
-        if (pdfRef.current && allowScrolling) {
-          pdfRef.current.addEventListener("scroll", () => {
-            // Get all the image elements within the #pdf element
-            const images = Array.from(pdfRef.current!.querySelectorAll('img'));
-            // Get the center coordinates of the #pdf element
-            const pdfRect = pdfRef.current!.getBoundingClientRect();
-            const pdfCenterX = pdfRect.left + pdfRect.width / 2;
-            const pdfCenterY = pdfRect.top + pdfRect.height / 2;
-            // Get the closest image to the center of the #pdf element
-            const closestImage = images.reduce((acc, curr) => {
-                const currRect = curr.getBoundingClientRect();
-                const currCenterX = currRect.left + currRect.width / 2;
-                const currCenterY = currRect.top + currRect.height / 2;
-                const currDistance = Math.hypot(currCenterX - pdfCenterX, currCenterY - pdfCenterY);
-                const accDistance = Math.hypot(acc.getBoundingClientRect().left + acc.getBoundingClientRect().width / 2 - pdfCenterX, acc.getBoundingClientRect().top + acc.getBoundingClientRect().height / 2 - pdfCenterY);
-                return currDistance < accDistance ? curr : acc;
-            });
-            // Set the page state to the id of the closest image
-            const closestImageId = closestImage.getAttribute('id');
-            setPage(Number(closestImageId!.replace('pdf', '')));
-          });
+      
+    const getCurrentPage = () => {
+        const pdf = pdfRef.current;
+        const imgs = imgRefs.current;
+      
+        if (!pdf || !imgs.length) return -1;
+      
+        const pdfRect = pdf.getBoundingClientRect();
+        const centerX = pdfRect.left + pdfRect.width / 2;
+        const centerY = pdfRect.top + pdfRect.height / 2;
+      
+        let closestDist = Number.MAX_SAFE_INTEGER;
+        let closestImg = -1;
+      
+        for (let i = 0; i < imgs.length; i++) {
+          const img = imgs[i];
+          if (!img) continue;
+          const imgRect = img.getBoundingClientRect();
+          const imgCenterX = imgRect.left + imgRect.width / 2;
+          const imgCenterY = imgRect.top + imgRect.height / 2;
+          const dist =
+            Math.pow(centerX - imgCenterX, 2) + Math.pow(centerY - imgCenterY, 2);
+          if (dist < closestDist) {
+            closestDist = dist;
+            closestImg = i;
+          }
         }
-      }, [pdfRef]);
       
+        return closestImg;
+    };
+
+    const handleUpClick = () => {
+        const imgs = imgRefs.current;
+        const currentPage = getCurrentPage();
+        if (currentPage < 0 || currentPage === 0) return;
       
+        const prevPage = imgs[currentPage - 1];
+        if (!prevPage) return;
+      
+        const prevPageRect = prevPage.getBoundingClientRect();
+        const pdfRect = pdfRef.current?.getBoundingClientRect();
+      
+        if (!prevPageRect || !pdfRect) return;
+      
+        const pdfScrollTop = pdfRef.current!.scrollTop;
+        const prevPageTop = prevPageRect.top - pdfRect.top;
+      
+        pdfRef.current!.scroll({
+          top: pdfScrollTop + prevPageTop,
+          behavior: 'smooth',
+        });
+      };
+
+      
+      const handleDownClick = () => {
+        const imgs = imgRefs.current;
+        const currentPage = getCurrentPage();
+        if (currentPage < 0 || currentPage === imgs.length - 1) return;
+      
+        const nextPage = imgs[currentPage + 1];
+        if (!nextPage) return;
+      
+        const nextPageRect = nextPage.getBoundingClientRect();
+        const pdfRect = pdfRef.current?.getBoundingClientRect();
+      
+        if (!nextPageRect || !pdfRect) return;
+      
+        const pdfScrollTop = pdfRef.current!.scrollTop;
+        const nextPageTop = nextPageRect.top - pdfRect.top;
+      
+        pdfRef.current!.scroll({
+          top: pdfScrollTop + nextPageTop,
+          behavior: 'smooth',
+        });
+      };
+
+    if (!show) {
+      return <></>;
+    }
+  
     return (
-        <PopUpWrapper style={{visibility: show ? "visible" : "hidden"}}>
-            <div id="content">
-                <div ref={el => pdfRef.current = el} id="pdf">
-                    {[1,2,3].map(imgIndex => {
-                        return <img 
-                        ref={el => imgRefs.current[imgIndex] = el}
-                        style={{
-                            width: "100%",
-                            height: "100%"
-                        }} id={`pdf${imgIndex}`} src="./assets/p1.png" alt="" />
-                    })}
-                </div>
-                <div id="buttons">
-                    <PIButtonPopup>
-                        SmPC and adverse <br/> event reporting
-                    </PIButtonPopup>
-                    <div id="buttons-page">
-                        <button onClick={() => onNavClick(page-1)} id="up"></button>
-                        <button onClick={() => onNavClick(page+1)} style={{ transform: "rotateX(180deg)" }}
-                        id="down"></button>
-                    </div>
-                </div>
+      <PopUpWrapper style={{ visibility: show ? 'visible' : 'hidden' }}>
+        <div id="content">
+          <div ref={(el) => (pdfRef.current = el)} id="pdf">
+            {[...Array(pageSizes[show]).keys()].map((imgIndex) => {
+              const page = `${imgIndex + 1}`.padStart(3, '0');
+              return (
+                <img
+                  key={imgIndex}
+                  ref={(el) => (imgRefs.current[imgIndex] = el)}
+                  src={`./assets/${show}/${page}.jpg`}
+                  alt=""
+                />
+              );
+            })}
+          </div>
+          <div id="buttons">
+             <PIButtonPopup 
+             show={show !== "smpc"}
+             onClick={() => setShow("smpc")}>
+              SmPC and adverse <br /> event reporting
+            </PIButtonPopup>
+            <div id="buttons-page">
+              <button 
+              onClick={handleUpClick}
+              id="up"></button>
+              <button
+                onClick={handleDownClick}
+                style={{ transform: 'rotateX(180deg)' }}
+                id="down"
+              ></button>
             </div>
-            <button id="close-button" onClick={() => setShow(!show)}>
-                Close
-            </button>
-        </PopUpWrapper>
-    )
-}
+          </div>
+        </div>
+        <button id="close-button" onClick={() => setShow(false)}>
+          Close
+        </button>
+      </PopUpWrapper>
+    );
+  }
 
 const PopUpWrapper = styled.div`
     position: absolute;
@@ -115,14 +167,22 @@ const PopUpWrapper = styled.div`
         gap: 4vw;
         background: white;
         width: 90%;
+        min-height: 70vh;
         max-height: 70vh;
         #pdf {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1vw;
             position: relative;
             background: gray;
             height: 90%;
             width: 90%;
             border: .5vw solid black;
             overflow-y: scroll;
+            img {
+                width: 100%;
+            }
         }
         #buttons {
             display: flex;
@@ -155,8 +215,12 @@ const PopUpWrapper = styled.div`
     }
 `
 
-const PIButtonPopup = styled(PIButton)`
+type PIButtonPopupProps = {
+    show: boolean
+}
 
+const PIButtonPopup = styled(PIButton)<PIButtonPopupProps>`
+    visibility: ${props => props.show ? 'visible' : 'hidden'};
     height: 10vw;
     padding-right: 5vw;
     padding-left: 0;

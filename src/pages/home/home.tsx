@@ -3,8 +3,10 @@ import React, {useRef} from "react";
 import { Box, Footer, HomeWrapper, PIButton } from "./home.styles";
 import PopUp from "./popup";
 
+export type Path = "smpc" | "keydata" | "oabin65" | "cvsafety" | "oabinmen" | false
+
 export default function Home() {
-  const [showPopup, setShowPopup] = React.useState(false);
+  const [showPopup, setShowPopup] = React.useState<Path>(false);
   const isIPadWidth = useMediaQuery("(max-width: 1024px)");
   const videoRef = useRef<HTMLVideoElement | null>();
 
@@ -19,6 +21,13 @@ export default function Home() {
       videoRef.current.play();
     }
   };
+
+  const pages = {
+    keydata: `BETMIGA: \\A Key data`,
+    oabinmen: `OAB \\A in men`,
+    oabin65: `OAB in people \\A ≥65 years old`,
+    cvsafety: `CV safety: \\A Hoffman \\A publication`
+  }
 
   return (
     <HomeWrapper>
@@ -37,15 +46,13 @@ export default function Home() {
         </p>
         <div id="boxes">
           {
-            [`BETMIGA: \\A Key data`, 
-            `OAB \\A in men`, 
-            `OAB in people \\A ≥65 years old`, 
-            `CV safety: \\A Hoffman \\A publication`].map((str, i) => {
-              return <Box key={i} content={str}/>
+            Object.entries(pages).map((page, i) => {
+              const [path, str] = page;
+              return <Box onClick={() => setShowPopup(path as Path)} key={i} content={str}/>
             })
           }
         </div>
-        <PIButton onClick={() => setShowPopup(true)}>
+        <PIButton onClick={() => setShowPopup("smpc")}>
           SmPC and adverse event reporting
         </PIButton>
       </div>
