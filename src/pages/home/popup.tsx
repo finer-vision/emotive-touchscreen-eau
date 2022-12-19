@@ -7,7 +7,7 @@ type Props = {
     useShow: [Path, React.Dispatch<React.SetStateAction<Path>>],
 }
 
-const pageSizes = {
+const pageSizes: { [key: string]: number } = {
     keydata: 4,
     oabinmen: 18,
     oabin65: 13,
@@ -100,7 +100,7 @@ export default function PopUp({ useShow }: Props) {
     }
   
     return (
-      <PopUpWrapper style={{ visibility: show ? 'visible' : 'hidden' }}>
+      <PopUpWrapper pages={pageSizes[show]} style={{ visibility: show ? 'visible' : 'hidden' }}>
         <div id="content">
           <div ref={(el) => (pdfRef.current = el)} id="pdf">
             {[...Array(pageSizes[show]).keys()].map((imgIndex) => {
@@ -140,7 +140,12 @@ export default function PopUp({ useShow }: Props) {
     );
   }
 
-const PopUpWrapper = styled.div`
+
+type PopUpWrapperProps = {
+    pages: number;
+}
+
+const PopUpWrapper = styled.div<PopUpWrapperProps>`
     position: absolute;
     top: 0;
     left: 0;
@@ -182,6 +187,11 @@ const PopUpWrapper = styled.div`
             overflow-y: scroll;
             img {
                 width: 100%;
+            }
+        }
+        #pdf:nth-last-child(${props => `-n`+`${props.pages-1}`}) {
+            * {
+                display: none;
             }
         }
         #buttons {
