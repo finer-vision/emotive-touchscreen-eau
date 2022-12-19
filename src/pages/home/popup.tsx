@@ -7,7 +7,7 @@ type Props = {
     useShow: [Path, React.Dispatch<React.SetStateAction<Path>>],
 }
 
-const pageSizes: { [key: string]: number } = {
+const pages: { [key: string]: number } = {
     keydata: 4,
     oabinmen: 18,
     oabin65: 13,
@@ -19,6 +19,12 @@ export default function PopUp({ useShow }: Props) {
     const [show, setShow] = useShow;
     const imgRefs = useRef<(HTMLImageElement | null)[]>([]);
     const pdfRef = useRef<HTMLDivElement | null>(null);
+    const [loadedImages, setLoadedImages] = useState(0);
+    const allImagesLoaded = pages[show as string] === loadedImages;
+    
+    useEffect(() => {
+        setLoadedImages(0);
+    }, [show])
 
     const getCurrentPage = () => {
         const pdf = pdfRef.current;
@@ -71,6 +77,7 @@ export default function PopUp({ useShow }: Props) {
           behavior: 'smooth',
         });
       };
+
       
       const handleDownClick = () => {
         const imgs = imgRefs.current;
@@ -95,24 +102,29 @@ export default function PopUp({ useShow }: Props) {
       };
 
     if (!show) {
-      return <></>;
+      return null;
     }
   
     return (
-      <PopUpWrapper pages={pageSizes[show]}>
+      <PopUpWrapper>
         <div id="content">
           <div ref={(el) => (pdfRef.current = el)} id="pdf">
-            {[...Array(pageSizes[show]).keys()].map((imgIndex) => {
-              const page = `${imgIndex + 1}`.padStart(3, '0');
-              return (
-                <div style={{width: "100%"}}>
-                    <img
-                  key={imgIndex}
-                  ref={(el) => (imgRefs.current[imgIndex] = el)}
-                  src={`./assets/${show}/${page}.jpg`}
-                />
-                </div>
-              );
+            {Object.entries(pages).map(([key, size]) => {
+                return <React.Fragment key={key}>
+                {show === key && [...Array(size).keys()].map((imgIndex) => {
+                    const page = `${imgIndex + 1}`.padStart(3, '0');
+
+                    return (
+                        <img
+                        style={{visibility: allImagesLoaded ? "visible" : "hidden"}}
+                        key={imgIndex}
+                        ref={(el) => (imgRefs.current[imgIndex] = el)}
+                        src={`./assets/${key}/${page}.jpg`}
+                        onLoad={() => setLoadedImages(state => state+1)}
+                        />
+                    );
+                    })}
+                </React.Fragment>
             })}
           </div>
           <div id="buttons">
@@ -140,12 +152,7 @@ export default function PopUp({ useShow }: Props) {
     );
   }
 
-
-type PopUpWrapperProps = {
-    pages: number;
-}
-
-const PopUpWrapper = styled.div<PopUpWrapperProps>`
+const PopUpWrapper = styled.div`
     position: absolute;
     top: 0;
     left: 0;

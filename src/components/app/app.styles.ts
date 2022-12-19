@@ -58,4 +58,5 @@ export const AppReset = createGlobalStyle`
     color: black;
     font-weight: bold;
   }
+  
   `;

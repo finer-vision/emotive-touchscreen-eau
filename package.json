@@ -17,6 +17,7 @@
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.8",
     "@types/react": "^18.0.25",
     "@types/react-dom": "^18.0.8",
+    "@types/react-lazy-load-image-component": "^1.5.2",
     "@types/react-pdf": "^5.7.4",
     "@types/react-router-dom": "^5.3.3",
     "@types/styled-components": "^5.1.26",
