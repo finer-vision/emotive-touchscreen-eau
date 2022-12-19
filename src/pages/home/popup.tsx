@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import styled from "styled-components"
 import { PIButton } from "./home.styles"
 import { Path } from "./home";
@@ -17,9 +17,9 @@ const pageSizes: { [key: string]: number } = {
 
 export default function PopUp({ useShow }: Props) {
     const [show, setShow] = useShow;
-    const pdfRef = useRef<HTMLDivElement | null>();
     const imgRefs = useRef<(HTMLImageElement | null)[]>([]);
-      
+    const pdfRef = useRef<HTMLDivElement | null>(null);
+
     const getCurrentPage = () => {
         const pdf = pdfRef.current;
         const imgs = imgRefs.current;
@@ -71,7 +71,6 @@ export default function PopUp({ useShow }: Props) {
           behavior: 'smooth',
         });
       };
-
       
       const handleDownClick = () => {
         const imgs = imgRefs.current;
@@ -100,18 +99,19 @@ export default function PopUp({ useShow }: Props) {
     }
   
     return (
-      <PopUpWrapper pages={pageSizes[show]} style={{ visibility: show ? 'visible' : 'hidden' }}>
+      <PopUpWrapper pages={pageSizes[show]}>
         <div id="content">
           <div ref={(el) => (pdfRef.current = el)} id="pdf">
             {[...Array(pageSizes[show]).keys()].map((imgIndex) => {
               const page = `${imgIndex + 1}`.padStart(3, '0');
               return (
-                <img
+                <div style={{width: "100%"}}>
+                    <img
                   key={imgIndex}
                   ref={(el) => (imgRefs.current[imgIndex] = el)}
                   src={`./assets/${show}/${page}.jpg`}
-                  alt=""
                 />
+                </div>
               );
             })}
           </div>
@@ -187,11 +187,6 @@ const PopUpWrapper = styled.div<PopUpWrapperProps>`
             overflow-y: scroll;
             img {
                 width: 100%;
-            }
-        }
-        #pdf:nth-last-child(${props => `-n`+`${props.pages-1}`}) {
-            * {
-                display: none;
             }
         }
         #buttons {
