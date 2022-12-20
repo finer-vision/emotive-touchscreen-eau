@@ -104,7 +104,7 @@ export default function PopUp({ useShow }: Props) {
       };
 
       const loaded = (imageIndex: number): boolean => {
-        if (imageIndex < 0) {
+        if (imageIndex <= 0) {
             return true;
         } else if (!loadedImages[imageIndex]) {
             return false;
