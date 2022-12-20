@@ -23,6 +23,9 @@ export default function PopUp({ useShow }: Props) {
     
     useEffect(() => {
         setLoadedImages([]);
+        pdfRef.current?.scroll({
+            top: 0
+        })
     }, [show])
 
     const getCurrentPage = () => {
