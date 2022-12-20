@@ -19,11 +19,10 @@ export default function PopUp({ useShow }: Props) {
     const [show, setShow] = useShow;
     const imgRefs = useRef<(HTMLImageElement | null)[]>([]);
     const pdfRef = useRef<HTMLDivElement | null>(null);
-    const [loadedImages, setLoadedImages] = useState(0);
-    const allImagesLoaded = pages[show as string] === loadedImages;
+    const [loadedImages, setLoadedImages] = useState<number[]>([]);
     
     useEffect(() => {
-        setLoadedImages(0);
+        setLoadedImages([]);
     }, [show])
 
     const getCurrentPage = () => {
@@ -109,18 +108,18 @@ export default function PopUp({ useShow }: Props) {
       <PopUpWrapper>
         <div id="content">
           <div ref={(el) => (pdfRef.current = el)} id="pdf">
-            {Object.entries(pages).map(([key, size]) => {
+            {Object.entries(pages).map(([key, size], i) => {
                 return <React.Fragment key={key}>
                 {show === key && [...Array(size).keys()].map((imgIndex) => {
                     const page = `${imgIndex + 1}`.padStart(3, '0');
 
                     return (
                         <img
-                        style={{visibility: allImagesLoaded ? "visible" : "hidden"}}
+                        style={{visibility: loadedImages.some(img => i === img) ? "visible" : "hidden"}}
                         key={imgIndex}
                         ref={(el) => (imgRefs.current[imgIndex] = el)}
                         src={`./assets/${key}/${page}.jpg`}
-                        onLoad={() => setLoadedImages(state => state+1)}
+                        onLoad={() => setLoadedImages(state => [...state, i])}
                         />
                     );
                     })}
