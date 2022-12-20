@@ -119,7 +119,13 @@ export default function PopUp({ useShow }: Props) {
         caches.open('pdf').then(cache => {
             imgRefs.current.forEach(imgRef => {
                 if (imgRef) {
-                    cache.add(imgRef.src);
+                    cache.match(imgRef.src).then(response => {
+                        if (response) {
+                            imgRef.src = response.url;
+                        } else {
+                            cache.add(imgRef.src);
+                        }
+                    });
                 }
             });
         });
