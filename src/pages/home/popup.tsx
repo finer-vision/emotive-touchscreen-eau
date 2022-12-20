@@ -19,10 +19,8 @@ export default function PopUp({ useShow }: Props) {
     const [show, setShow] = useShow;
     const imgRefs = useRef<(HTMLImageElement | null)[]>([]);
     const pdfRef = useRef<HTMLDivElement | null>(null);
-    const [loadedImages, setLoadedImages] = useState<Record<number, boolean>>({});
     
     useEffect(() => {
-        setLoadedImages([]);
         pdfRef.current?.scroll({
             top: 0
         })
@@ -103,16 +101,6 @@ export default function PopUp({ useShow }: Props) {
         });
       };
 
-      const loaded = (imageIndex: number): boolean => {
-        if (imageIndex < 0) {
-            return true;
-        } else if (!loadedImages[imageIndex]) {
-            return false;
-        } else {
-            return loaded(imageIndex - 1);
-        }
-      }
-
     if (!show) {
       return null;
     }
@@ -129,14 +117,9 @@ export default function PopUp({ useShow }: Props) {
                     return (
                         <img
                         loading={imgIndex <= 3 ? "eager" : "lazy"}
-                        style={{visibility: loaded(i) ? "visible" : "hidden"}}
                         key={imgIndex}
                         ref={(el) => (imgRefs.current[imgIndex] = el)}
                         src={`./assets/${key}/${page}.jpg`}
-                        onLoad={() => {
-                            loadedImages[imgIndex] = true;
-                            setLoadedImages({...loadedImages});
-                        }}
                         />
                     );
                     })}
