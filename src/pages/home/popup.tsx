@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react"
 import styled from "styled-components"
 import { PIButton } from "./home.styles"
 import { Path } from "./home";
+import Loading from "../../components/loading";
 
 type Props = {
     useShow: [Path, React.Dispatch<React.SetStateAction<Path>>],
@@ -19,10 +20,17 @@ export default function PopUp({ useShow }: Props) {
     const [show, setShow] = useShow;
     const imgRefs = useRef<(HTMLImageElement | null)[]>([]);
     const pdfRef = useRef<HTMLDivElement | null>(null);
-    const [loadedImages, setLoadedImages] = useState<Record<number, boolean>>({});
+
+    useEffect(() => {
+        imgRefs.current.forEach(imgRef => {
+            if (imgRef) {
+                const imgElement = new Image();
+                imgElement.src = imgRef.src;
+            }
+        });
+    }, []);
     
     useEffect(() => {
-        setLoadedImages([]);
         pdfRef.current?.scroll({
             top: 0
         })
@@ -103,16 +111,6 @@ export default function PopUp({ useShow }: Props) {
         });
       };
 
-      const loaded = (imageIndex: number): boolean => {
-        if (imageIndex < 0) {
-            return true;
-        } else if (!loadedImages[imageIndex]) {
-            return false;
-        } else {
-            return loaded(imageIndex - 1);
-        }
-      }
-
     if (!show) {
       return null;
     }
@@ -128,15 +126,10 @@ export default function PopUp({ useShow }: Props) {
 
                     return (
                         <img
-                        loading={imgIndex <= 3 ? "eager" : "lazy"}
-                        key={imgIndex}
-                        ref={(el) => (imgRefs.current[imgIndex] = el)}
-                        src={`./assets/${key}/${page}.jpg`}
-                        onLoad={() => {
-                            loadedImages[imgIndex] = true;
-                            setLoadedImages({...loadedImages});
-                        }}
-                        />
+                            loading={imgIndex <= 3 ? "eager" : "lazy"}
+                            key={imgIndex}
+                            ref={(el) => (imgRefs.current[imgIndex] = el)}
+                            src={`./assets/${key}/${page}.jpg`}/>   
                     );
                     })}
                 </React.Fragment>
