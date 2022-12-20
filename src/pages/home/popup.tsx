@@ -123,7 +123,8 @@ export default function PopUp({ useShow }: Props) {
                 }
             });
         });
-    }, []); 
+    }, [show]); 
+
     if (!show) {
       return null;
     }
