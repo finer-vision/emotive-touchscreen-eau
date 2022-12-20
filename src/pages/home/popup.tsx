@@ -114,15 +114,16 @@ export default function PopUp({ useShow }: Props) {
         }
       }
 
-      useEffect(() => {
-        imgRefs.current.forEach(imgRef => {
-            if (imgRef) {
-                const imgElement = new Image();
-                imgElement.src = imgRef.src;
-            }
-        });
-    }, []);
 
+      useEffect(() => {
+        caches.open('pdf').then(cache => {
+            imgRefs.current.forEach(imgRef => {
+                if (imgRef) {
+                    cache.add(imgRef.src);
+                }
+            });
+        });
+    }, []); 
     if (!show) {
       return null;
     }
