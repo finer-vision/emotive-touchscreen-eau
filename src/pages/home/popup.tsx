@@ -139,6 +139,7 @@ export default function PopUp({ useShow }: Props) {
                     return (
                         <>
                             <img
+                                style={{visibility: imgIndex <= 3 ? "visible" : loadedImages[imgIndex] ? "visible" : "hidden"}}
                                 loading={imgIndex <= 3 ? "eager" : "lazy"}
                                 key={imgIndex}
                                 ref={(el) => (imgRefs.current[imgIndex] = el)}
