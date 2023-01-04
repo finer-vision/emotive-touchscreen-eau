@@ -87,7 +87,9 @@ export default function Home() {
           <div id="details">
             <p>
               RCP disponibile allo stand. Informazioni piu dettagliate su questo medicinale sono <br/>
-              disponibili sul sito web della Agenzia europea dei medicinali:  <u>www.ema.europa.eu.</u>
+              <span style={{
+                display: "flex"
+              }}>disponibili sul sito web della Agenzia europea dei medicinali:  <u>www.ema.europa.eu.</u></span>
             </p>
             <p id="legal">
               Depositato in AIFA il XX.XX.2023 
