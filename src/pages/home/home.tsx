@@ -82,7 +82,7 @@ export default function Home() {
         </div>
         <div id="bottom">          
           <p>
-            Full prescribing information is available at the booth.
+            Summary of Product Characteristics (SmPCs) are available at the booth.
           </p>
           <div id="details">
             <p>
@@ -92,7 +92,7 @@ export default function Home() {
             <p id="legal">
               Depositato in AIFA il XX.XX.2023 
               <br/>
-              MAT-IT-BET-2022-00002 December 2022
+              MAT-IT-BET-2022-00002 January 2023
             </p>
           </div>
         </div>
