@@ -1,13 +1,14 @@
-import React, { useEffect, useRef } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import styled from "styled-components"
 import { PIButton } from "./home.styles"
 import { Path } from "./home";
+import Loading from "../../components/loading";
 
 type Props = {
     useShow: [Path, React.Dispatch<React.SetStateAction<Path>>],
 }
 
-const pageSizes = {
+const pages: { [key: string]: number } = {
     keydata: 4,
     oabinmen: 18,
     oabin65: 13,
@@ -17,9 +18,17 @@ const pageSizes = {
 
 export default function PopUp({ useShow }: Props) {
     const [show, setShow] = useShow;
-    const pdfRef = useRef<HTMLDivElement | null>();
     const imgRefs = useRef<(HTMLImageElement | null)[]>([]);
-      
+    const pdfRef = useRef<HTMLDivElement | null>(null);
+    const [loadedImages, setLoadedImages] = useState<Record<number, boolean>>({});
+    
+    useEffect(() => {
+        setLoadedImages([]);
+        pdfRef.current?.scroll({
+            top: 0
+        })
+    }, [show])
+
     const getCurrentPage = () => {
         const pdf = pdfRef.current;
         const imgs = imgRefs.current;
@@ -95,24 +104,62 @@ export default function PopUp({ useShow }: Props) {
         });
       };
 
+      const loaded = (imageIndex: number): boolean => {
+        if (imageIndex < 0) {
+            return true;
+        } else if (!loadedImages[imageIndex]) {
+            return false;
+        } else {
+            return loaded(imageIndex - 1);
+        }
+      }
+
+
+      useEffect(() => {
+        caches.open('pdf').then(cache => {
+            imgRefs.current.forEach(imgRef => {
+                if (imgRef) {
+                    cache.match(imgRef.src).then(response => {
+                        if (response) {
+                            imgRef.src = response.url;
+                        } else {
+                            cache.add(imgRef.src);
+                        }
+                    });
+                }
+            });
+        });
+    }, [show]); 
+
     if (!show) {
-      return <></>;
+      return null;
     }
   
     return (
-      <PopUpWrapper style={{ visibility: show ? 'visible' : 'hidden' }}>
+      <PopUpWrapper>
         <div id="content">
           <div ref={(el) => (pdfRef.current = el)} id="pdf">
-            {[...Array(pageSizes[show]).keys()].map((imgIndex) => {
-              const page = `${imgIndex + 1}`.padStart(3, '0');
-              return (
-                <img
-                  key={imgIndex}
-                  ref={(el) => (imgRefs.current[imgIndex] = el)}
-                  src={`./assets/${show}/${page}.jpg`}
-                  alt=""
-                />
-              );
+            {Object.entries(pages).map(([key, size], i) => {
+                return <React.Fragment key={key}>
+                {show === key && [...Array(size).keys()].map((imgIndex) => {
+                    const page = `${imgIndex + 1}`.padStart(3, '0');
+
+                    return (
+                        <>
+                            <img
+                                style={{visibility: imgIndex <= 3 ? "visible" : loadedImages[imgIndex] ? "visible" : "hidden"}}
+                                loading={imgIndex <= 3 ? "eager" : "lazy"}
+                                key={imgIndex}
+                                ref={(el) => (imgRefs.current[imgIndex] = el)}
+                                src={`./assets/${key}/${page}.jpg`}
+                                onLoad={() => {
+                                    loadedImages[imgIndex] = true;
+                                    setLoadedImages({...loadedImages});
+                            }}/>
+                        </>    
+                    );
+                    })}
+                </React.Fragment>
             })}
           </div>
           <div id="buttons">
