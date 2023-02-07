@@ -1,4 +1,4 @@
-//v1.0.0
+//v1
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { HashRouter as Router } from "react-router-dom";
