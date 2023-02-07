@@ -9,8 +9,8 @@ export default function Home() {
   const [showPopup, setShowPopup] = React.useState<Path>(false);
   const isIPadWidth = useMediaQuery("(max-width: 1024px)");
   const videoRef = useRef<HTMLVideoElement | null>();
-
   const [isPlaying, setIsPlaying] = React.useState(false);
+  const [isFirstSecond, setIsFirstSecond] = React.useState(true);
 
   const handlePlayPause = () => {
     if(!videoRef.current) return;
@@ -21,6 +21,18 @@ export default function Home() {
       videoRef.current.play();
     }
   };
+
+  React.useEffect(() => {
+    if(!videoRef.current) return;
+    const handleTimeUpdate = () => {
+      setIsFirstSecond(videoRef.current.currentTime < 1);
+    }
+    videoRef.current.addEventListener("timeupdate", handleTimeUpdate);
+
+    return () => {
+      videoRef.current.removeEventListener("timeupdate", handleTimeUpdate);
+    }
+  }, [isPlaying])
 
   const pages = {
     keydata: `BETMIGA: \\A Key data`,
@@ -39,6 +51,7 @@ export default function Home() {
           <video ref={el => videoRef.current = el} src="./assets/video.mp4">
 
           </video>
+          {isFirstSecond && <img src="./assets/thumbnail.png" alt="thumbnail" id="thumbnail" />}
           {!isPlaying && <img src="./assets/play.png" alt="play" id="play" />}
         </div>
         <p id="description">
