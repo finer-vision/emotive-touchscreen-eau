@@ -1,4 +1,17 @@
 import styled from "styled-components";
+import { motion } from "framer-motion"
+
+export const Thumbnail = styled(motion.img).attrs({
+    src: "./assets/thumbnail.png",
+    exit: { opacity: 0 },
+})`
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 5;
+`
 
 export const HomeWrapper = styled.div`
     height: 100vh;
@@ -37,14 +50,6 @@ export const HomeWrapper = styled.div`
             left: 50%;
             transform: translate(-50%, -50%);
             z-index: 10;
-        }
-        #thumbnail {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 5;
         }
     }
     #content {

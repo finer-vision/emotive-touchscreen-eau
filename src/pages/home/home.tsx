@@ -1,7 +1,8 @@
 import useMediaQuery from "@/hooks/useMediaQuery";
 import React, {useRef} from "react";
-import { Box, Footer, HomeWrapper, PIButton } from "./home.styles";
+import { Box, Footer, HomeWrapper, PIButton, Thumbnail } from "./home.styles";
 import PopUp from "./popup";
+import { AnimatePresence } from "framer-motion";
 
 export type Path = "smpc" | "keydata" | "oabin65" | "cvsafety" | "oabinmen" | false
 
@@ -51,7 +52,9 @@ export default function Home() {
           <video ref={el => videoRef.current = el} src="./assets/video.mp4">
 
           </video>
-          {isFirstSecond && <img src="./assets/thumbnail.png" alt="thumbnail" id="thumbnail" />}
+          <AnimatePresence>
+            {isFirstSecond && <Thumbnail/>}
+          </AnimatePresence>
           {!isPlaying && <img src="./assets/play.png" alt="play" id="play" />}
         </div>
         <p id="description">
