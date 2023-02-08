@@ -13,6 +13,22 @@ export const Thumbnail = styled(motion.img).attrs({
     z-index: 5;
 `
 
+export const BackToTopButton = styled.button.attrs({
+    onClick: () => {
+        const page = document.getElementById("page-0");
+        page.scrollIntoView({ behavior: "smooth" });
+    }
+})`
+    position: absolute;
+    color: white;
+    bottom: 2.2%;
+    left: 7%;
+    width: 16%;
+    height: 3%;
+    cursor: pointer;
+    background: none;
+`;
+
 export const HomeWrapper = styled.div`
     height: 100vh;
     display: flex;

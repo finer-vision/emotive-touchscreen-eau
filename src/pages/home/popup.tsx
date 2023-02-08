@@ -1,19 +1,20 @@
 import React, { useEffect, useRef, useState } from "react"
 import styled from "styled-components"
-import { PIButton } from "./home.styles"
+import { PIButton, BackToTopButton } from "./home.styles"
 import { Path } from "./home";
 import assets from "@/config/assets";
+import popupLinks from "./popup-links";
 
 type Props = {
     useShow: [Path, React.Dispatch<React.SetStateAction<Path>>],
 }
 
 const pages: { [key: string]: number } = {
-    keydata: 4,
-    oabinmen: 18,
-    oabin65: 13,
-    cvsafety: 6,
-    smpc: 100
+    keydata: 6,
+    oabinmen: 19,
+    oabin65: 14,
+    cvsafety: 9,
+    smpc: 101
 }
 
 export default function PopUp({ useShow }: Props) {
@@ -128,7 +129,8 @@ export default function PopUp({ useShow }: Props) {
                     const page = `${imgIndex + 1}`.padStart(3, '0');
 
                     return (
-                        <>
+                        <div id={`page-${imgIndex}`}
+                        style={{position: "relative"}}>
                             <img
                                 loading={imgIndex <= 3 ? "eager" : "lazy"}
                                 key={imgIndex}
@@ -138,7 +140,28 @@ export default function PopUp({ useShow }: Props) {
                                     loadedImages[imgIndex] = true;
                                     setLoadedImages({...loadedImages});
                             }}/>
-                        </>    
+                            <BackToTopButton/>
+                            {popupLinks[key] && popupLinks[key][imgIndex] && 
+                              Object.entries(popupLinks[key][imgIndex]).map(([_, {width, top, left, height, to}]) => {
+                                return (
+                                  <button 
+                                  onClick={() => {
+                                    document.getElementById(`page-${to}`).scrollIntoView({behavior: "smooth"})
+                                  }}
+                                  style={{
+                                    position: "absolute",
+                                    width: `${width}%`,
+                                    top: `${top}%`,
+                                    left: `${left}%`,
+                                    height: `${height}%`,
+                                    backgroundColor: "rgba(0,0,0,0)",
+                                    zIndex: 100,
+                                    cursor: "pointer"
+                                  }}></button>   
+                                )
+                              })
+                            }
+                        </div>    
                     );
                     })}
                 </React.Fragment>
