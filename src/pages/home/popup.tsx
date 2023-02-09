@@ -141,6 +141,12 @@ export default function PopUp({ useShow }: Props) {
                                     setLoadedImages({...loadedImages});
                             }}/>
                             <BackToTopButton/>
+                            {imgIndex === 0 && 
+                              <button id="nav-smpc"
+                              onClick={() => setShow("smpc")}>
+
+                              </button>
+                            }
                             {popupLinks[key] && popupLinks[key][imgIndex] && 
                               Object.entries(popupLinks[key][imgIndex]).map(([_, {width, top, left, height, to}]) => {
                                 return (
@@ -154,7 +160,7 @@ export default function PopUp({ useShow }: Props) {
                                     top: `${top}%`,
                                     left: `${left}%`,
                                     height: `${height}%`,
-                                    backgroundColor: "rgba(0,0,0,0)",
+                                    backgroundColor: "rgba(255,0,0,0)",
                                     zIndex: 100,
                                     cursor: "pointer"
                                   }}></button>   
@@ -205,6 +211,15 @@ const PopUpWrapper = styled.div`
     align-items: center;
     flex-direction: column;
     gap: 4vw;
+    & #nav-smpc {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 5%;
+      width: 33%;
+      background: rgba(0,0,0,0);
+      cursor: pointer;
+    }
     #close-button {
         border-radius: 5vw;
         width: 50%;

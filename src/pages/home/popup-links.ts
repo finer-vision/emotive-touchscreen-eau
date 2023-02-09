@@ -70,7 +70,7 @@ export default {
                 left: 7,
                 height: 3,
                 to: 4
-            }
+            },
         },
         1: {
             0: {
@@ -121,9 +121,56 @@ export default {
                 height: 3,
                 to: 1
             }
-        }
+        },
+        
     },
     oabinmen: {
+        0: {
+            0: {
+                width: 25,
+                top: 0,
+                left: 0,
+                height: 5,
+                to: 2
+            },
+            1: {
+                width: 25,
+                top: 0,
+                left: 25,
+                height: 5,
+                to: 6
+            },
+            2: {
+                width: 25,
+                top: 0,
+                left: 50,
+                height: 5,
+                to: 11
+            },
+        },
+        1: {
+            0: {
+                width: 33,
+                top: 42,
+                left: 0,
+                height: 5,
+                to: 2
+            },
+            1: {
+                width: 33,
+                top: 42,
+                left: 33,
+                height: 5,
+                to: 6
+            },
+            2: {
+                width: 33,
+                top: 42,
+                left: 67.5,
+                height: 5,
+                to: 11
+            },
+        },
         13: {
             0: {
                 width: 4,
@@ -138,7 +185,7 @@ export default {
                 left: 89,
                 height: 3,
                 to: 18
-            }
+            },
         },
         18: {
             0: {
@@ -151,6 +198,38 @@ export default {
         }
     },
     oabin65: {
+        0: {
+            0: {
+                width: 33,
+                top: 0,
+                left: 0,
+                height: 5,
+                to: 2
+            },
+            1: {
+                width: 33,
+                top: 0,
+                left: 33,
+                height: 5,
+                to: 6
+            },
+        },
+        1: {
+            0: {
+                width: 50,
+                top: 63,
+                left: 0,
+                height: 5,
+                to: 2
+            },
+            1: {
+                width: 50,
+                top: 63,
+                left: 50,
+                height: 5,
+                to: 6
+            },
+        },
         5: {
             0: {
                 width: 4,
