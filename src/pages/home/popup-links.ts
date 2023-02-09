@@ -71,6 +71,13 @@ export default {
                 height: 3,
                 to: 4
             },
+            2: {
+                width: 25,
+                top: 0,
+                left: 74.7,
+                height: 5,
+                to: 3
+            },
         },
         1: {
             0: {
@@ -147,6 +154,13 @@ export default {
                 height: 5,
                 to: 11
             },
+            3: {
+                width: 25,
+                top: 0,
+                left: 74.7,
+                height: 5,
+                to: 17
+            },
         },
         1: {
             0: {
@@ -213,6 +227,13 @@ export default {
                 height: 5,
                 to: 6
             },
+            2: {
+                width: 33,
+                top: 0,
+                left: 66.6,
+                height: 5,
+                to: 12
+            },
         },
         1: {
             0: {
@@ -230,17 +251,26 @@ export default {
                 to: 6
             },
         },
-        5: {
+        13: {
             0: {
                 width: 4,
                 top: 33.3,
                 left: 44,
                 height: 3,
-                to: 13
+                to: 5
             },
         },
     },
     cvsafety: {
+        0: {
+            0: {
+                width: 25,
+                top: 0,
+                left: 74.7,
+                height: 5,
+                to: 5
+            },
+        },
         1: {
             0: {
                 width: 4,
