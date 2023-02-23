@@ -110,7 +110,7 @@ export default function Home() {
             <p id="legal">
               Depositato in AIFA il XX.XX.2023 
               <br/>
-              MAT-IT-BET-2022-00002 January 2023
+              MAT-IT-BET-2022-00002 February 2023
             </p>
           </div>
         </div>
