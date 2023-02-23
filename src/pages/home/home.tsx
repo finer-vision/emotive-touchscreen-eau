@@ -108,7 +108,7 @@ export default function Home() {
               }}>disponibili sul sito web della Agenzia europea dei medicinali:  <u>www.ema.europa.eu.</u></span>
             </p>
             <p id="legal">
-              Depositato in AIFA il XX.XX.2023 
+              Depositato in AIFA il 15.02.2023 
               <br/>
               MAT-IT-BET-2022-00002 February 2023
             </p>
