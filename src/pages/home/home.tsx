@@ -102,7 +102,7 @@ export default function Home() {
           </p>
           <div id="details">
             <p>
-              RCP disponibile allo stand. Informazioni piu dettagliate su questo medicinale sono <br/>
+              RCP disponibili allo stand. Informazioni piu dettagliate su questo medicinale sono <br/>
               <span style={{
                 display: "flex"
               }}>disponibili sul sito web della Agenzia europea dei medicinali:  <u>www.ema.europa.eu.</u></span>
