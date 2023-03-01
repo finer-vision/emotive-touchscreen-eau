@@ -8,6 +8,7 @@ Start app in development mode:
 
 ```shell
 nvm use # uses supported Node version for this project (optional)
+cp .env.example .env
 npm install
 npm start
 ```

@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { AppReset } from "@/components/app/app.styles";
 import useSession from "@/hooks/useSession";
 import { useIdleTimer } from 'react-idle-timer'
@@ -35,11 +35,15 @@ export default function App() {
   })
 
   React.useEffect(() => {
+    console.log("init")
     if (DEV) return;
+    console.log("init2")
     if(state === "Active") {
       session.start();
+      console.log("start")
     } else {
       session.end();
+      console.log("end")
     }
   }, [state])
 
