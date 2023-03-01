@@ -65,6 +65,14 @@ export default function useSession(analyticsEndpoint: string, projectId: string)
     currentSessionRef.current.duration = end.getTime() - start.getTime();
     saveSession(currentSessionRef.current);
     currentSessionRef.current = null;
+    currentSessionRef.current.pages.map((page) => {
+      const start = page.start as Date;
+      let end = page.end as Date;
+      page.duration = end.getTime() - start.getTime();
+      page.start = getDateString(start);
+      page.end = getDateString(end);
+      return page;
+    });
   }, []);
 
   const start = React.useCallback(() => {
