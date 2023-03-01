@@ -35,6 +35,7 @@ export default function App() {
   })
 
   React.useEffect(() => {
+    if (DEV) return;
     if(state === "Active") {
       session.start();
     } else {
