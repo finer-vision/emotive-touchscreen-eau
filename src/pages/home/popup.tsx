@@ -1,13 +1,9 @@
 import React, { useEffect, useRef, useState } from "react"
 import styled from "styled-components"
 import { PIButton, BackToTopButton } from "./home.styles"
-import { Path } from "./home";
 import assets from "@/config/assets";
 import popupLinks from "./popup-links";
-
-type Props = {
-    useShow: [Path, React.Dispatch<React.SetStateAction<Path>>],
-}
+import { Path, usePathState } from "@/state";
 
 const pages: { [key: string]: number } = {
     keydata: 6,
@@ -17,8 +13,8 @@ const pages: { [key: string]: number } = {
     smpc: 101
 }
 
-export default function PopUp({ useShow }: Props) {
-    const [show, setShow] = useShow;
+export default function PopUp() {
+    const {path, setPath} = usePathState();
     const imgRefs = useRef<(HTMLImageElement | null)[]>([]);
     const pdfRef = useRef<HTMLDivElement | null>(null);
     const [loadedImages, setLoadedImages] = useState<Record<number, boolean>>({});
@@ -28,7 +24,7 @@ export default function PopUp({ useShow }: Props) {
         pdfRef.current?.scroll({
             top: 0
         })
-    }, [show])
+    }, [path])
 
     const getCurrentPage = () => {
         const pdf = pdfRef.current;
@@ -115,7 +111,7 @@ export default function PopUp({ useShow }: Props) {
         }
       }
 
-    if (!show) {
+    if (!path) {
       return null;
     }
   
@@ -125,7 +121,7 @@ export default function PopUp({ useShow }: Props) {
           <div ref={(el) => (pdfRef.current = el)} id="pdf">
             {Object.entries(pages).map(([key, size], i) => {
                 return <React.Fragment key={key}>
-                {show === key && [...Array(size).keys()].map((imgIndex) => {
+                {path === key && [...Array(size).keys()].map((imgIndex) => {
                     const page = `${imgIndex + 1}`.padStart(3, '0');
 
                     return (
@@ -169,8 +165,8 @@ export default function PopUp({ useShow }: Props) {
           </div>
           <div id="buttons">
              <PIButtonPopup 
-             show={show !== "smpc"}
-             onClick={() => setShow("smpc")}>
+             path={path !== "smpc"}
+             onClick={() => setPath("smpc")}>
               SmPC and adverse <br /> event reporting
             </PIButtonPopup>
             <div id="buttons-page">
@@ -185,7 +181,7 @@ export default function PopUp({ useShow }: Props) {
             </div>
           </div>
         </div>
-        <button id="close-button" onClick={() => setShow(false)}>
+        <button id="close-button" onClick={() => setPath("home")}>
           Close
         </button>
       </PopUpWrapper>
@@ -268,11 +264,11 @@ const PopUpWrapper = styled.div`
 `
 
 type PIButtonPopupProps = {
-    show: boolean
+    path: boolean
 }
 
 const PIButtonPopup = styled(PIButton)<PIButtonPopupProps>`
-    visibility: ${props => props.show ? 'visible' : 'hidden'};
+    visibility: ${props => props.path ? 'visible' : 'hidden'};
     height: 10vw;
     padding-right: 5vw;
     padding-left: 0;

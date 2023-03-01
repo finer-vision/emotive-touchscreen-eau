@@ -1,3 +1,4 @@
+import { Path } from "@/state";
 import React from "react";
 
 type Session = {
@@ -6,7 +7,15 @@ type Session = {
   end: string;
   duration: number;
   sentToServer: boolean;
+  pages: SessionPage[];
 };
+
+type SessionPage = {
+  name: string;
+  start: Date | string;
+  end: Date | string;
+  duration: number;
+}
 
 function getDateString(date: Date): string {
   const offset = date.getTimezoneOffset();
@@ -69,8 +78,26 @@ export default function useSession(analyticsEndpoint: string, projectId: string)
       end: getDateString(new Date()),
       duration: 0,
       sentToServer: false,
+      pages: [],
     };
   }, [end]);
+
+  const page = (path: Path) => {
+    if (currentSessionRef.current === null) return;
+
+    // Set duration for previous page
+    const prevPageIndex = currentSessionRef.current.pages.length - 1;
+    if (prevPageIndex > -1) {
+      currentSessionRef.current.pages[prevPageIndex].end = new Date();
+    }
+
+    currentSessionRef.current.pages.push({
+      start: new Date(),
+      end: new Date(),
+      duration: 0,
+      name: path,
+    });
+  }
 
   // Attempt to send locally cached sessions to the server
   React.useEffect(() => {
@@ -117,6 +144,7 @@ export default function useSession(analyticsEndpoint: string, projectId: string)
     return {
       start,
       end,
+      page
     };
   }, [start, end]);
 }

@@ -3,15 +3,14 @@ import React, {useRef} from "react";
 import { Box, Footer, HomeWrapper, PIButton, Thumbnail } from "./home.styles";
 import PopUp from "./popup";
 import { AnimatePresence } from "framer-motion";
-
-export type Path = "smpc" | "keydata" | "oabin65" | "cvsafety" | "oabinmen" | false
+import { Path, usePathState } from "@/state";
 
 export default function Home() {
-  const [showPopup, setShowPopup] = React.useState<Path>(false);
   const isIPadWidth = useMediaQuery("(max-width: 1024px)");
   const videoRef = useRef<HTMLVideoElement | null>();
   const [isPlaying, setIsPlaying] = React.useState(false);
   const [isFirstSecond, setIsFirstSecond] = React.useState(true);
+  const {path, setPath} = usePathState();
 
   const handlePlayPause = () => {
     if(!videoRef.current) return;
@@ -64,11 +63,11 @@ export default function Home() {
           {
             Object.entries(pages).map((page, i) => {
               const [path, str] = page;
-              return <Box onClick={() => setShowPopup(path as Path)} key={i} content={str}/>
+              return <Box onClick={() => setPath(path as Path)} key={i} content={str}/>
             })
           }
         </div>
-        <PIButton onClick={() => setShowPopup("smpc")}>
+        <PIButton onClick={() => setPath("smpc")}>
           SmPC and adverse event reporting
         </PIButton>
       </div>
@@ -115,7 +114,7 @@ export default function Home() {
           </div>
         </div>
       </Footer>
-      <PopUp useShow={[showPopup, setShowPopup]}/>
+      {path !== "home" && <PopUp/>}
     </HomeWrapper>
   );
 }
