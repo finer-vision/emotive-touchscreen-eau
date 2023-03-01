@@ -154,5 +154,5 @@ export default function useSession(analyticsEndpoint: string, projectId: string)
       end,
       page
     };
-  }, [start, end]);
+  }, [start, end, page]);
 }
