@@ -256,10 +256,10 @@ const PopUpWrapper = styled.div`
                         height: 100%;
                     }
                 }
-                #arrow-up {
+                #arrow-up::before {
                   background-image: url("./assets/arrow-up.png");
                 }
-                #arrow-down {
+                #arrow-down::before {
                   background-image: url("./assets/arrow-down.png");
                 }
             }
