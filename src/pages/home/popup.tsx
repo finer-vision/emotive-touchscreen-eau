@@ -172,11 +172,10 @@ export default function PopUp() {
             <div id="buttons-page">
               <button 
               onClick={handleUpClick}
-              id="up"></button>
+              id="arrow-up"></button>
               <button
                 onClick={handleDownClick}
-                style={{ transform: 'rotateX(180deg)' }}
-                id="down"
+                id="arrow-down"
               ></button>
             </div>
           </div>
@@ -249,7 +248,6 @@ const PopUpWrapper = styled.div`
                         position: absolute;
                         left: 0;
                         top: 0;
-                        background-image: url("./assets/arrow-up.png");
                         background-size: 50% 50%;
                         background-repeat: no-repeat;
                         background-position: center;
@@ -257,6 +255,12 @@ const PopUpWrapper = styled.div`
                         width: 100%;
                         height: 100%;
                     }
+                }
+                #arrow-up {
+                  background-image: url("./assets/arrow-up.png");
+                }
+                #arrow-down {
+                  background-image: url("./assets/arrow-down.png");
                 }
             }
         }

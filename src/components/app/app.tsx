@@ -12,7 +12,7 @@ const Home = React.lazy(() => import("@/pages/home/home"));
 export default function App() {
   const [state, setState] = React.useState<string>('Active')
   const [count, setCount] = React.useState<number>(0)
-  const {path} = usePathState();
+  const {path, setPath} = usePathState();
 
   const onIdle = () => {
     setState('Idle')
@@ -35,15 +35,12 @@ export default function App() {
   })
 
   React.useEffect(() => {
-    console.log("init")
     if (DEV) return;
-    console.log("init2")
     if(state === "Active") {
       session.start();
-      console.log("start")
     } else {
       session.end();
-      console.log("end")
+      setPath("home")
     }
   }, [state])
 
