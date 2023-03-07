@@ -29,8 +29,16 @@ export default function Home() {
     }
     videoRef.current.addEventListener("timeupdate", handleTimeUpdate);
 
+    const handleEnd = () => {
+      videoRef.current.currentTime = 0;
+      setIsFirstSecond(true);
+      setIsPlaying(false);
+    }
+    videoRef.current.addEventListener("ended", handleEnd)
+
     return () => {
       videoRef.current.removeEventListener("timeupdate", handleTimeUpdate);
+      videoRef.current.removeEventListener("ended", handleEnd);
     }
   }, [isPlaying])
 
