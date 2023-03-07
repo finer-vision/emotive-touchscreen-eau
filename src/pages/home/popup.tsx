@@ -4,6 +4,7 @@ import { PIButton, BackToTopButton } from "./home.styles"
 import assets from "@/config/assets";
 import popupLinks from "./popup-links";
 import { Path, usePathState } from "@/state";
+import { motion } from "framer-motion";
 
 const pages: { [key: string]: number } = {
     keydata: 6,
@@ -128,7 +129,7 @@ export default function PopUp() {
                         <div id={`page-${imgIndex}`}
                         style={{position: "relative"}}>
                             <img
-                                loading="eager"
+                                loading="lazy"
                                 key={imgIndex}
                                 ref={(el) => (imgRefs.current[imgIndex] = el)}
                                 src={assets[`${key}${page}`]}
@@ -167,7 +168,7 @@ export default function PopUp() {
              <PIButtonPopup 
              path={path !== "smpc"}
              onClick={() => setPath("smpc")}>
-              SmPC and adverse <br /> event reporting
+              SmPC and adverse <br/> event reporting
             </PIButtonPopup>
             <div id="buttons-page">
               <button 
@@ -187,7 +188,11 @@ export default function PopUp() {
     );
   }
 
-const PopUpWrapper = styled.div`
+const PopUpWrapper = styled(motion.div).attrs(() => ({
+  initial: { opacity: 0 },
+  animate: { opacity: 1 },
+  exit: { opacity: 0 },
+}))`
     position: absolute;
     top: 0;
     left: 0;

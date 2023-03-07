@@ -114,7 +114,9 @@ export default function Home() {
           </div>
         </div>
       </Footer>
-      {path !== "home" && <PopUp/>}
+      <AnimatePresence>
+        {path !== "home" && <PopUp/>}
+      </AnimatePresence>
     </HomeWrapper>
   );
 }
