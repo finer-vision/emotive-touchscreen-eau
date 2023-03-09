@@ -13,12 +13,7 @@ export const Thumbnail = styled(motion.img).attrs({
     z-index: 5;
 `
 
-export const BackToTopButton = styled.button.attrs({
-    onClick: () => {
-        const page = document.getElementById("page-0");
-        page.scrollIntoView({ behavior: "smooth" });
-    }
-})`
+export const BackToTopButton = styled.button`
     position: absolute;
     color: white;
     bottom: 2.2%;

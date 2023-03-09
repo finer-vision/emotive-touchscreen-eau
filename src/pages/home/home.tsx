@@ -2,6 +2,7 @@ import useMediaQuery from "@/hooks/useMediaQuery";
 import React, {useRef} from "react";
 import { Box, Footer, HomeWrapper, PIButton, Thumbnail } from "./home.styles";
 import PopUp from "./popup";
+import PopupTouchscreen from "./popup-touchscreen";
 import { AnimatePresence } from "framer-motion";
 import { Path, usePathState } from "@/state";
 
@@ -123,7 +124,7 @@ export default function Home() {
         </div>
       </Footer>
       <AnimatePresence>
-        {path !== "home" && <PopUp/>}
+        {(path !== "home") && (isIPadWidth ? <PopUp/> : <PopupTouchscreen/>)}
       </AnimatePresence>
     </HomeWrapper>
   );

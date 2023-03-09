@@ -137,7 +137,10 @@ export default function PopUp() {
                                     loadedImages[imgIndex] = true;
                                     setLoadedImages({...loadedImages});
                             }}/>
-                            <BackToTopButton/>
+                            <BackToTopButton onClick={() => {
+                                const page = document.getElementById("page-0");
+                                page.scrollIntoView({ behavior: "smooth" });
+                            }}/>
                             {popupLinks[key] && popupLinks[key][imgIndex] && 
                               Object.entries(popupLinks[key][imgIndex]).map(([_, {width, top, left, height, to}]) => {
                                 return (
