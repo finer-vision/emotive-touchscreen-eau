@@ -11,13 +11,3 @@ export const usePathState = create<PathState>(set => ({
     path: "home",
     setPath: (path) => set({ path })
 }));
-
-type IsIpadState = {
-    isIpad: boolean;
-    setIsIpad: (isIpad: boolean) => void;
-}
-
-export const useIsIpadState = create<IsIpadState>(set => ({
-    isIpad: false,
-    setIsIpad: (isIpad) => set({ isIpad })
-}));

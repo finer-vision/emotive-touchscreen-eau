@@ -13,6 +13,10 @@ export default function Home() {
   const [isFirstSecond, setIsFirstSecond] = React.useState(true);
   const {path, setPath} = usePathState();
 
+  React.useEffect(() => {
+    localStorage.setItem("analyticsSessionsDeviceType", isIPadWidth ? "iPad" : "Touchscreen")
+  }, [isIPadWidth])
+
   const handlePlayPause = () => {
     if(!videoRef.current) return;
     setIsPlaying(!isPlaying);

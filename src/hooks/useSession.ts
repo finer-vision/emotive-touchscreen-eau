@@ -54,6 +54,9 @@ const DEVICE_ID =
 
 localStorage.setItem("analyticsSessionsDeviceId", DEVICE_ID);
 
+const DEVICE_TYPE = () =>
+  localStorage.getItem("analyticsSessionsDeviceType") ?? "Touchscreen";
+
 export default function useSession(analyticsEndpoint: string, projectId: string) {
   const currentSessionRef = React.useRef<Session>(null);
 
@@ -125,6 +128,7 @@ export default function useSession(analyticsEndpoint: string, projectId: string)
           method: "POST",
           body: JSON.stringify({
             deviceId: DEVICE_ID,
+            label: DEVICE_TYPE(),
             projectId,
             sessions: sessionsToSync,
           }),
