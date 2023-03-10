@@ -11,6 +11,7 @@ const Home = React.lazy(() => import("@/pages/home/home"));
 
 export default function App() {
   const {path, setPath} = usePathState();
+  const [started, setStarted] = React.useState(false)
 
   const session = useSession(
     "https://analytics-server.finervision.com/api/save-sessions",
@@ -21,27 +22,21 @@ export default function App() {
     session.page(path)
   }, [path])
 
-  React.useEffect(() => {
-    if (path === "home") return;
-
-    let timeout: NodeJS.Timeout;
-
-    function startIdleTimeout() {
-      if (timeout !== undefined) {
+  useIdleTimer({
+    timeout: 60000,
+    onIdle: () => {
+      setPath("home")
+      setStarted(false)
+      session.end()
+    },
+    onAction: () => {
+      if (!started) {
+        setStarted(true)
         session.start()
-        clearTimeout(timeout);
       }
-      timeout = setTimeout(() => {
-        session.end()
-      }, 60000);
-    }
-
-    startIdleTimeout();
-    window.addEventListener("pointerdown", startIdleTimeout);
-    return () => {
-      window.removeEventListener("pointerdown", startIdleTimeout);
-    };
-  }, [path]);
+    },
+    debounce: 500,
+  })
 
   return (
     <React.Suspense fallback="Loading...">
