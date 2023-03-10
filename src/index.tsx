@@ -3,7 +3,6 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { HashRouter as Router } from "react-router-dom";
 import App from "@/components/app/app";
-import config from "@/config/config";
 import assets from "./config/assets";
 
 const rootElement = document.querySelector("#root");
@@ -35,7 +34,7 @@ if ("serviceWorker" in navigator && !DEV) {
               registration
                 .update()
                 .then(() => {
-                    window.location.reload();
+                  window.location.reload();
                 })
                 .catch((err) => {
                   console.error(err);
@@ -51,13 +50,11 @@ if ("serviceWorker" in navigator && !DEV) {
 }
 
 for (const asset in assets) {
-  fetch(assets[asset]).catch(err => console.error(err))
+  fetch(assets[asset]).catch((err) => console.error(err));
 }
 
 root.render(
-  <React.StrictMode>
-    <Router>
-      <App />
-    </Router>
-  </React.StrictMode>
+  <Router>
+    <App />
+  </Router>
 );
