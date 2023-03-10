@@ -38,6 +38,7 @@ function getSessions(): Session[] {
 }
 
 function saveSession(session: Session) {
+  console.log("save session")
   const sessions = getSessions();
   const exists = sessions.some((item) => item.uuid === session.uuid);
   if (exists) return;
@@ -46,6 +47,7 @@ function saveSession(session: Session) {
 }
 
 function saveSessions(sessions: Session[]) {
+  console.log("save sessionS !")
   localStorage.setItem("analyticsSessions", JSON.stringify(sessions));
 }
 
@@ -66,14 +68,13 @@ export default function useSession(analyticsEndpoint: string, projectId: string)
     const end = new Date();
     currentSessionRef.current.end = getDateString(end);
     currentSessionRef.current.duration = end.getTime() - start.getTime();
-    currentSessionRef.current.pages.map((page) => {
-      const start = page.start as Date;
-      let end = page.end as Date;
-      page.duration = end.getTime() - start.getTime();
-      page.start = getDateString(start);
-      page.end = getDateString(end);
-      return page;
-    });
+    //currentSessionRef.current.pages = currentSessionRef.current.pages.map((page) => {
+    //  const start = new Date(page.start);
+    //  const end = new Date(page.end);
+    //  page.duration = end.getTime() - start.getTime();
+    //  console.log(end.getTime(), start.getTime())
+    //  return page;
+    //});
     saveSession(currentSessionRef.current);
     currentSessionRef.current = null;
   }, []);
@@ -81,6 +82,7 @@ export default function useSession(analyticsEndpoint: string, projectId: string)
   const start = React.useCallback(() => {
     // Save current session (if there is one)
     if (currentSessionRef.current !== null) {
+      console.log("inside end")
       end();
     }
     currentSessionRef.current = {
@@ -98,13 +100,16 @@ export default function useSession(analyticsEndpoint: string, projectId: string)
 
     // Set duration for previous page
     const prevPageIndex = currentSessionRef.current.pages.length - 1;
+    
     if (prevPageIndex > -1) {
-      currentSessionRef.current.pages[prevPageIndex].end = new Date();
+      const duration = new Date().getTime() - new Date(currentSessionRef.current.pages[prevPageIndex].start).getTime();
+      currentSessionRef.current.pages[prevPageIndex].duration = duration;
+      currentSessionRef.current.pages[prevPageIndex].end = getDateString(new Date());
     }
 
     currentSessionRef.current.pages.push({
-      start: new Date(),
-      end: new Date(),
+      start: getDateString(new Date()),
+      end: getDateString(new Date()),
       duration: 0,
       name: path,
     });

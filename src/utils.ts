@@ -2,7 +2,6 @@ import assets from "@/config/assets";
 import config from "@/config/config";
 
 export function asset(url: string): string {
-  console.log(process.env)
   return url.replace(/^\//, process.env.PUBLIC_PATH);
 }
 

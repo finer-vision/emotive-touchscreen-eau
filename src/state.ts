@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-export type Path = "smpc" | "keydata" | "oabin65" | "cvsafety" | "oabinmen" | "home"
+export type Path = "smpc" | "keydata" | "oabin65" | "cvsafety" | "oabinmen" | "home" | "screensaver"
 
 type PathState = {
     path: Path;
@@ -8,6 +8,6 @@ type PathState = {
 }
 
 export const usePathState = create<PathState>(set => ({
-    path: "home",
+    path: "screensaver",
     setPath: (path) => set({ path })
 }));

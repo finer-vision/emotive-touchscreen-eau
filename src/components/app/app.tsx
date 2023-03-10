@@ -19,13 +19,14 @@ export default function App() {
   );
 
   React.useEffect(() => {
+    if(path === "screensaver") return
     session.page(path)
-  }, [path])
+  }, [path, session])
 
   useIdleTimer({
-    timeout: 60000,
+    timeout: 6000,
     onIdle: () => {
-      setPath("home")
+      setPath("screensaver")
       setStarted(false)
       session.end()
     },

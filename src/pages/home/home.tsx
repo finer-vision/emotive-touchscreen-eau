@@ -128,7 +128,7 @@ export default function Home() {
         </div>
       </Footer>
       <AnimatePresence>
-        {(path !== "home") && (isIPadWidth ? <PopUp/> : <PopupTouchscreen/>)}
+        {(!["home", "screensaver"].includes(path)) && (isIPadWidth ? <PopUp/> : <PopupTouchscreen/>)}
       </AnimatePresence>
     </HomeWrapper>
   );
