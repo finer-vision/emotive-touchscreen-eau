@@ -10,39 +10,7 @@ export const DEV = process.env.NODE_ENV === "development";
 const Home = React.lazy(() => import("@/pages/home/home"));
 
 export default function App() {
-  const [state, setState] = React.useState<string>('Active')
-  const [count, setCount] = React.useState<number>(0)
   const {path, setPath} = usePathState();
-
-  const onIdle = () => {
-    setState('Idle')
-  }
-
-  const onActive = () => {
-    setState('Active')
-  }
-
-  const onAction = () => {
-    setCount(count + 1)
-  }
-
-  useIdleTimer({
-    onIdle,
-    onActive,
-    onAction,
-    timeout: 60000,
-    throttle: 500
-  })
-
-  React.useEffect(() => {
-    if (DEV) return;
-    if(state === "Active") {
-      session.start();
-    } else {
-      session.end();
-      setPath("home")
-    }
-  }, [state])
 
   const session = useSession(
     "https://analytics-server.finervision.com/api/save-sessions",
@@ -52,6 +20,28 @@ export default function App() {
   React.useEffect(() => {
     session.page(path)
   }, [path])
+
+  React.useEffect(() => {
+    if (path === "home") return;
+
+    let timeout: NodeJS.Timeout;
+
+    function startIdleTimeout() {
+      if (timeout !== undefined) {
+        session.start()
+        clearTimeout(timeout);
+      }
+      timeout = setTimeout(() => {
+        session.end()
+      }, 60000);
+    }
+
+    startIdleTimeout();
+    window.addEventListener("pointerdown", startIdleTimeout);
+    return () => {
+      window.removeEventListener("pointerdown", startIdleTimeout);
+    };
+  }, [path]);
 
   return (
     <React.Suspense fallback="Loading...">
