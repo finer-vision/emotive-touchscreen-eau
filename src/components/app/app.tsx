@@ -49,7 +49,7 @@ export default function App() {
       clearTimeout(timeout);
       timeout = setTimeout(() => {
         setPath("screensaver");
-      }, 5000);
+      }, 60000);
     }
 
     resetTimeout();
